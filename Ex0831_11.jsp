@@ -1,6 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-   <%@ page import="java.sql.*" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -180,41 +179,6 @@
     </style>
 </head>
 <body>
-<%
-	Connection conn = null;
-	String url = "jdbc:oracle:thin:@192.168.0.25:1521:orcl"; //주소:포트:sid
-	String user = "st1";
-	String passwd = "1234";
-	PreparedStatement pstmt = null;
-	ResultSet rs = null;
-	//select 진행시 결과를 받는 객체
-	String sql = "";
-	try{
-		Class.forName("oracle.jdbc.driver.OracleDriver"); // 드라이버를 로딩하는 메서드
-		out.print("드라이버로드성공<br>");
-		conn = DriverManager.getConnection(url,user,passwd);
-		out.print("접속 성공<br>");
-		sql = "select * from tbltest";
-		pstmt = conn.prepareStatement(sql); //쿼리 준비
-		rs = pstmt.executeQuery(); // 결과를 받음
-		while (rs.next()){
-			String username = rs.getString("username");
-			int age = rs.getInt("age");
-			out.print("---------------------------<br>");
-			out.print(username+" : "+ age + "<br>");
-		}
-		out.print("쿼리 ok<br>");
-	} catch(Exception e){
-		System.out.println(e.toString());
-	} finally {//연결 종료
-		if(rs !=null)
-			rs.close();
-		if(pstmt != null)
-			pstmt.close();
-		if(conn != null)
-			conn.close();
-	}
-%>
 	    <header id="main_header">
         <div id="title">
             <h1>UI 프로그래밍</h1>
@@ -243,6 +207,11 @@
         <section id="main_section">
             <article class="main_article">
                 <h1>Main Article</h1>
+                <form method = "post" action = "./Ex0831_12.jsp">
+                	<p><input type = "text" name ="username"></p>
+                	<p><input type = "text" name ="age"></p>
+                	<p><input type = "submit" value = "전송하기"></p>
+                </form>
             </article>
             <article class="main_article">
                 <h1>Main Article</h1>

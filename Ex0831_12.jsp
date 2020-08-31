@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-   <%@ page import="java.sql.*" %>
+<%@ page import = "java.sql.*" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -181,39 +181,34 @@
 </head>
 <body>
 <%
+	request.setCharacterEncoding("utf-8");
+	String username = request.getParameter("username");
+	String age = request.getParameter("age");
 	Connection conn = null;
-	String url = "jdbc:oracle:thin:@192.168.0.25:1521:orcl"; //주소:포트:sid
+	String url = "jdbc:oracle:thin:@192.168.0.25:1521:orcl";
 	String user = "st1";
 	String passwd = "1234";
 	PreparedStatement pstmt = null;
-	ResultSet rs = null;
-	//select 진행시 결과를 받는 객체
 	String sql = "";
+	
 	try{
-		Class.forName("oracle.jdbc.driver.OracleDriver"); // 드라이버를 로딩하는 메서드
-		out.print("드라이버로드성공<br>");
+		Class.forName("oracle.jdbc.driver.OracleDriver");
 		conn = DriverManager.getConnection(url,user,passwd);
-		out.print("접속 성공<br>");
-		sql = "select * from tbltest";
-		pstmt = conn.prepareStatement(sql); //쿼리 준비
-		rs = pstmt.executeQuery(); // 결과를 받음
-		while (rs.next()){
-			String username = rs.getString("username");
-			int age = rs.getInt("age");
-			out.print("---------------------------<br>");
-			out.print(username+" : "+ age + "<br>");
-		}
-		out.print("쿼리 ok<br>");
-	} catch(Exception e){
+		sql = "insert into tbltest values (?,?)";
+		pstmt = conn.prepareStatement(sql);
+		pstmt.setString(1, username); //1번 부터 시작
+		pstmt.setInt(2, Integer.parseInt(age));
+		pstmt.executeUpdate(); //쿼리 실행, 반환 x
+	}catch (Exception e){
 		System.out.println(e.toString());
-	} finally {//연결 종료
-		if(rs !=null)
-			rs.close();
+	}finally {
 		if(pstmt != null)
 			pstmt.close();
 		if(conn != null)
 			conn.close();
+		response.sendRedirect("./Ex0831_10.jsp");
 	}
+	
 %>
 	    <header id="main_header">
         <div id="title">
