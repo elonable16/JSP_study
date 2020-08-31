@@ -7,19 +7,31 @@
 <title>Insert title here</title>
 </head>
 <body>
-	<h1>김엘론 페이지</h1>
-	<p> 너무신기하다.<p>
-	<h3> 선언문 </h3>	
-	<%!
-		int cnt = 5;
-	%>
-	<h3>스크립트릿</h3>
+	<h1>세션에대한 정보를 얻어오는 예시</h1>
+	<p>정보를 받는 페이지와 별도의 페이지.<p>
 	<%
-		for (int i=0; i<5; i++){
-			out.print("<h4> Hello Jsp!!!</h4>");
+		String id = (String)session.getAttribute("id");
+		String passwd = (String)session.getAttribute("passward");
+		out.print(id + passwd);
+		if(request.isRequestedSessionIdValid() == true){
+			out.print("세션유효<br>");
+		}else {
+			out.print("세션 유효하지 않음<br>");
+		}
+		if(id != null){
+			out.print("로그인 됨");
+		}else {
+			out.print("로그아웃 됨");
 		}
 	%>
-	<h3>출력문</h3>
-	<h1><%= "변수나 문장 전부 가능" %></h1>
+	<%
+		Cookie[] cookies = request.getCookies();
+		out.print(cookies.length + "<br>");
+		for(int i = 0; i<cookies.length; i++){
+			out.print(cookies[i].getName() + ":");
+			out.print(cookies[i].getValue() + "<br>");
+		}
+	%>
+	
 </body>
 </html>
