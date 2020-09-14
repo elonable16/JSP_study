@@ -47,6 +47,7 @@
 		m_name = rs.getString("m_name");
 		bm_subject = rs.getString("bm_subject");
 		bm_contents = rs.getString("bm_contents");
+		bm_contents = bm_contents.replace("/n", "<br>");
 		bm_date = rs.getString("bm_date");
 		bm_cnt = rs.getInt("bm_cnt");
 		bm_ip = rs.getString("bm_ip");
@@ -164,7 +165,7 @@
 					bs_id = rs.getString("m_id");
 					bs_num = rs.getInt("bs_num");
 					bs_contents = rs.getString("bs_contents");
-					bs_contents = bs_contents.replace("<br>", "\n");
+					bs_contents = bs_contents.replace("\n", "<br>");
 					bs_date = rs.getString("bs_date");
 					bs_ip = rs.getString("bs_ip");
 					bs_name =rs.getString("m_name");

@@ -93,11 +93,12 @@
 		</div>
 		<div id="section">
 			<div id="article">
-				<p class="title">JSP 웹 프로그래밍</p>
-				<span class="item_title1">번호</span>
-				<span class="item_title2">제목</span>
-				<span class="item_title3">작성자</span>
-				<span class="item_title4">작성일</span>
+				<p class="title">Elon 웹 상품 리스트</p>
+				<span class="item_title1">상품코드</span>
+				<span class="item_title2">상품명</span>
+				<span class="item_title3">상품가격</span>
+				<span class="item_title4">이미지</span>
+				<span class="item_title5">상태</span>
 				<br>
 <%
 				PreparedStatement pstmt = null;
@@ -105,7 +106,7 @@
 				String sql = "";
 				
 				try{
-					sql = "select count(bm_num) from board_main";
+					sql = "select count(p_code) from product";
 					pstmt = conn.prepareStatement(sql);
 					rs = pstmt.executeQuery();
 					rs.next();
@@ -119,8 +120,8 @@
 					
 					sql = "select * from ";
 					sql += "(select * from ";
-					sql += "(select rownum as SEQ, bm_num, bm_subject, m_id, bm_date from";
-					sql += "(select * from board_main bm order by bm_num desc)";
+					sql += "(select rownum as SEQ, p_code, p_name, p_price,p_image,p_stat from";
+					sql += "(select * from product order by p_code desc)";
 					sql += " )where SEQ >= ? "; // 페이지 번호
 					sql += ")where rownum <=?"; // 페이지 단위
 					pstmt = conn.prepareStatement(sql);
@@ -128,16 +129,19 @@
 					pstmt.setInt(2, pagesize);
 					rs = pstmt.executeQuery();
 					while(rs.next()){
-						int bm_num = rs.getInt("bm_num");
-						String bm_subject = rs.getString("bm_subject");
-						String m_id = rs.getString("m_id");
-						String bm_date = rs.getString("bm_date");
-						bm_date = bm_date.substring(0,10);
+						int p_code = rs.getInt("p_code");
+						String p_name = rs.getString("p_name");
+						String p_price = rs.getString("p_price");
+						String p_image = rs.getString("p_image");
+						String p_stat = rs.getString("p_stat");
+						
 %>
-						<span class="item_contents1"><%=bm_num %></span>
-						<span class="item_contents2"><a href ="./view.jsp?bm_num=<%=bm_num %>"><%=bm_subject %></a></span>
-						<span class="item_contents3"><%=m_id %></span>
-						<span class="item_contents4"><%=bm_date %></span>
+						<span class="item_contents1"><%=p_code %></span>
+						<span class="item_contents2"><a href ="./view.jsp?p_code=<%=p_code %>"><%=p_name %></a></span>
+						<span class="item_contents3"><%=p_price %></span>
+						<span class="item_contents4"><img src="./images/<%=p_image%>.jpg" width = "30",height ="30"></span>
+						<span class="item_contents5"><%=p_stat %></span>
+						<br>
 						
 <%
 					}
@@ -176,7 +180,7 @@
 				}
 %>
 				
-				<p><a href = "./insert.jsp">게시판 쓰기</a></p>
+				<p><a href = "./insert.jsp">상품 등록</a></p>
 			</div>
 		</div>
 	</div>

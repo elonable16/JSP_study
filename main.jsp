@@ -32,7 +32,7 @@
 			<ul>
 				<li><a href="./board/list.jsp">게시판</a></li>
 				<li><a href="./guestbook/list.jsp">방명록</a></li>
-				<li><a href="#">메뉴3</a></li>
+				<li><a href="./product/list.jsp">상품보기</a></li>
 				<li><a href="#">메뉴4</a></li>
 				<li><a href="#">메뉴5</a></li>
 			</ul>
