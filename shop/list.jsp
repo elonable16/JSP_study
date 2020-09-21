@@ -16,7 +16,7 @@
 <%
 	String pagenum = request.getParameter("pagenum");
 	int ipagenum; // 현재 페이지
-	int pagesize = 3; // 페이징 단위
+	int pagesize = 9; // 페이징 단위
 	int startpage = 1; // 첫번째 페이지 번호
 	int endpage = 0; // 해당 그룹 마지막 페이지 번호
 	int lastpage = 0; // 전체레코드의 마지막 페이지
@@ -93,13 +93,8 @@
 		</div>
 		<div id="section">
 			<div id="article">
-				<p class="title">Elon 웹 상품 리스트</p>
-				<span class="item_title1">상품코드</span>
-				<span class="item_title2">상품명</span>
-				<span class="item_title3">상품가격</span>
-				<span class="item_title4">이미지</span>
-				<span class="item_title5">상태</span>
-				<br>
+				<p class="title">Elon's shop</p>
+				<table>
 <%
 				PreparedStatement pstmt = null;
 				ResultSet rs =null;
@@ -120,7 +115,7 @@
 					
 					sql = "select * from ";
 					sql += "(select * from ";
-					sql += "(select rownum as SEQ, p_code, p_name, p_price,p_image,p_stat from";
+					sql += "(select rownum as SEQ, p_code, p_name, p_price,p_image from";
 					sql += "(select * from product order by p_code desc)";
 					sql += " )where SEQ >= ? "; // 페이지 번호
 					sql += ")where rownum <=?"; // 페이지 단위
@@ -128,22 +123,48 @@
 					pstmt.setInt(1, (ipagenum-1)*pagesize+1);
 					pstmt.setInt(2, pagesize);
 					rs = pstmt.executeQuery();
+					int count = 0; // 테이블의 행, 열 위치 결정
 					while(rs.next()){
 						int p_code = rs.getInt("p_code");
 						String p_name = rs.getString("p_name");
 						String p_price = rs.getString("p_price");
 						String p_image = rs.getString("p_image");
-						String p_stat = rs.getString("p_stat");
-						
+						if(count %3== 0){
+							
 %>
-						<span class="item_contents1"><%=p_code %></span>
-						<span class="item_contents2"><a href ="./view.jsp?p_code=<%=p_code %>"><%=p_name %></a></span>
-						<span class="item_contents3"><%=p_price %></span>
-						<span class="item_contents4"><img src="./images/<%=p_image%>.jpg" width = "30px" height ="30px"></span>
-						<span class="item_contents5"><%=p_stat %></span>
-						<br>
-						
+							<tr>
 <%
+						}
+%>
+								<td class="td_shop_item">
+									<table>
+										<tr>
+											<td class= "td_shop_item_image">
+												<a href="./view.jsp?p_code=<%=p_code %>">
+													<img src="../product/images/<%=p_image%>.jpg" width="240px" height="240px">
+												</a>	
+											</td>
+										</tr>
+										<tr>
+											<td class= "td_shop_item_name">
+												<p><%= p_name %></p>
+											</td>
+										</tr>
+										<tr>
+											<td class= "td_shop_item_price">
+												<p><%= p_price %></p>
+											</td>
+										</tr>
+									</table>
+								</td>
+<%
+						// else if 로 안만들었을 경우에는 코드상의 위험성이 있을 수 있다.
+						if(count %3== 2){
+%>
+							</tr>
+<%
+						}
+						count++;
 					}
 					System.out.println("load board_main date ok");
 				}catch(Exception e){
@@ -157,6 +178,8 @@
 						conn.close();
 				}
 %> 
+					
+				</table>
 				<br>
 <%
 				if(startpage>1)
@@ -179,8 +202,7 @@
 <%
 				}
 %>
-				
-				<p><a href = "./insert.jsp">상품 등록</a></p>
+
 			</div>
 		</div>
 	</div>

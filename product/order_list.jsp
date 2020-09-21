@@ -7,6 +7,7 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
 <link rel = "stylesheet" href="./member.css">
+
 </head>
 <body>
 <%@include file ="./dbconn.jsp" %>
@@ -94,11 +95,11 @@
 		<div id="section">
 			<div id="article">
 				<p class="title">Elon 웹 상품 리스트</p>
-				<span class="item_title1">상품코드</span>
-				<span class="item_title2">상품명</span>
-				<span class="item_title3">상품가격</span>
-				<span class="item_title4">이미지</span>
-				<span class="item_title5">상태</span>
+				<span class="item_title1">주문번호</span>
+				<span class="item_title2">주문일</span>
+				<span class="item_title3">아이디</span>
+				<span class="item_title4">상태</span>
+				<span class="item_title5">기타</span>
 				<br>
 <%
 				PreparedStatement pstmt = null;
@@ -120,8 +121,8 @@
 					
 					sql = "select * from ";
 					sql += "(select * from ";
-					sql += "(select rownum as SEQ, p_code, p_name, p_price,p_image,p_stat from";
-					sql += "(select * from product order by p_code desc)";
+					sql += "(select rownum as SEQ, am_code, m_id, am_date,am_stat from";
+					sql += "(select * from account_main order by am_date desc)";
 					sql += " )where SEQ >= ? "; // 페이지 번호
 					sql += ")where rownum <=?"; // 페이지 단위
 					pstmt = conn.prepareStatement(sql);
@@ -129,19 +130,38 @@
 					pstmt.setInt(2, pagesize);
 					rs = pstmt.executeQuery();
 					while(rs.next()){
-						int p_code = rs.getInt("p_code");
-						String p_name = rs.getString("p_name");
-						String p_price = rs.getString("p_price");
-						String p_image = rs.getString("p_image");
-						String p_stat = rs.getString("p_stat");
+						int am_code = rs.getInt("am_code");
+						String m_id = rs.getString("m_id");
+						String am_date = rs.getString("am_date");
+						String am_stat = rs.getString("am_stat");
 						
 %>
-						<span class="item_contents1"><%=p_code %></span>
-						<span class="item_contents2"><a href ="./view.jsp?p_code=<%=p_code %>"><%=p_name %></a></span>
-						<span class="item_contents3"><%=p_price %></span>
-						<span class="item_contents4"><img src="./images/<%=p_image%>.jpg" width = "30px" height ="30px"></span>
-						<span class="item_contents5"><%=p_stat %></span>
+						<span class="item_contents1"><a href="./order_view.jsp?m_id=<%=m_id%>&am_code=<%=am_code %>"><%=am_code %></a></span>
+						<span class="item_contents2"><%=am_date %></a></span>
+						<span class="item_contents3"><%=m_id %></span>
+						<span class="item_contents4">
+							<form method ="post" action ="./order_proc.jsp">
+								<input type="hidden" name = "am_code" value ="<%=am_code%>">
+<%
+	String[] stat_val = {"A", "B","C","D"};
+	String[] stat_title = {"주문","결제확인","배송시작","배송완료"};
+%>
+								<select name = "am_stat">
+									<%for(int i=0; i<4; i++){ %>
+										<%if (am_stat.equals(stat_val[i])){ %>
+										<option value ="<%=stat_val[i]%>" selected><%=stat_title[i]%></option>
+										<%}else{ %>									
+										<option value ="<%=stat_val[i]%>"><%=stat_title[i]%></option>
+										<%}%>
+									<%} %>
+								</select>
+								<input type="submit" value="상태변경">
+								</form>
+						</span>
+
+						<span class="item_contents5">기타	</span>
 						<br>
+
 						
 <%
 					}
@@ -193,5 +213,7 @@
 		response.sendRedirect("../member/login.jsp");
 	}
 %>
+</body>
+</html>
 </body>
 </html>

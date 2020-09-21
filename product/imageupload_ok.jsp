@@ -48,8 +48,8 @@
 			conn.close();
 %>
 		<script>
-			window.opener.document.reload(); // 이전 윈도우 갱신
-			window.close();
+			opener.location.reload(); // 이전 윈도우 갱신
+			window.close();// 자신의 창 닫기
 		</script>
 <%
 	}

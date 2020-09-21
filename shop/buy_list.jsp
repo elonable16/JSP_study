@@ -7,6 +7,7 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
 <link rel = "stylesheet" href="./member.css">
+
 </head>
 <body>
 <%@include file ="./dbconn.jsp" %>
@@ -93,12 +94,12 @@
 		</div>
 		<div id="section">
 			<div id="article">
-				<p class="title">Elon 웹 상품 리스트</p>
-				<span class="item_title1">상품코드</span>
-				<span class="item_title2">상품명</span>
-				<span class="item_title3">상품가격</span>
-				<span class="item_title4">이미지</span>
-				<span class="item_title5">상태</span>
+				<p class="title">구매 상품 내역</p>
+				<span class="item_title1">주문번호</span>
+				<span class="item_title2">주문일</span>
+				<span class="item_title3">아이디</span>
+				<span class="item_title4">상태</span>
+				<span class="item_title5">기타</span>
 				<br>
 <%
 				PreparedStatement pstmt = null;
@@ -120,30 +121,52 @@
 					
 					sql = "select * from ";
 					sql += "(select * from ";
-					sql += "(select rownum as SEQ, p_code, p_name, p_price,p_image,p_stat from";
-					sql += "(select * from product order by p_code desc)";
+					sql += "(select rownum as SEQ, am_code, m_id, am_date,am_stat from";
+					sql += "(select * from account_main where m_id = ? order by am_code desc)";
 					sql += " )where SEQ >= ? "; // 페이지 번호
 					sql += ")where rownum <=?"; // 페이지 단위
 					pstmt = conn.prepareStatement(sql);
-					pstmt.setInt(1, (ipagenum-1)*pagesize+1);
-					pstmt.setInt(2, pagesize);
+					pstmt.setString(1, (String)session.getAttribute("m_id"));
+					pstmt.setInt(2, (ipagenum-1)*pagesize+1);
+					pstmt.setInt(3, pagesize);
 					rs = pstmt.executeQuery();
 					while(rs.next()){
-						int p_code = rs.getInt("p_code");
-						String p_name = rs.getString("p_name");
-						String p_price = rs.getString("p_price");
-						String p_image = rs.getString("p_image");
-						String p_stat = rs.getString("p_stat");
+						int am_code = rs.getInt("am_code");
+						String m_id = rs.getString("m_id");
+						String am_date = rs.getString("am_date");
+						String am_stat = rs.getString("am_stat");
 						
 %>
-						<span class="item_contents1"><%=p_code %></span>
-						<span class="item_contents2"><a href ="./view.jsp?p_code=<%=p_code %>"><%=p_name %></a></span>
-						<span class="item_contents3"><%=p_price %></span>
-						<span class="item_contents4"><img src="./images/<%=p_image%>.jpg" width = "30px" height ="30px"></span>
-						<span class="item_contents5"><%=p_stat %></span>
-						<br>
-						
+						<span class="item_contents1"><a href="./buy_view.jsp?am_code=<%=am_code %>"><%=am_code %></a></span>
+						<span class="item_contents2"><%=am_date %></a></span>
+						<span class="item_contents3"><%=m_id %></span>
+						<span class="item_contents4">
 <%
+	String[] stat_val = {"A","B","C","D"};
+	String[] stat_title = {"주문","결제확인","배송시작","배송완료"};
+%>
+							<%for(int i=0; i<4; i++){ %>
+								<%if (am_stat.equals(stat_val[i])){ %>
+									<%=stat_title[i]%>
+								<%}%>									
+							<%} %>
+						</span>
+<%	
+	ResultSet rs2 = null;
+	String sql2 = "";
+	sql2= "select sum(p.p_price*acs.as_cnt) from product p , account_sub acs where acs.am_code = ? and p.p_code = acs.p_code";
+	PreparedStatement pstmt2 = null;
+	pstmt2 = conn.prepareStatement(sql2);
+	pstmt2.setInt(1, am_code);
+	rs2= pstmt2.executeQuery();
+	rs2.next();
+	int am_price_total = rs2.getInt(1);
+%>
+						<span class="item_contents5"><%=am_price_total %></span>
+						<br>		
+<%
+	rs2.close();
+	pstmt2.close();
 					}
 					System.out.println("load board_main date ok");
 				}catch(Exception e){
@@ -193,5 +216,7 @@
 		response.sendRedirect("../member/login.jsp");
 	}
 %>
+</body>
+</html>
 </body>
 </html>

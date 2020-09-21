@@ -33,8 +33,8 @@
 				<li><a href="./board/list.jsp">게시판</a></li>
 				<li><a href="./guestbook/list.jsp">방명록</a></li>
 				<li><a href="./product/list.jsp">상품보기</a></li>
-				<li><a href="#">메뉴4</a></li>
-				<li><a href="#">메뉴5</a></li>
+				<li><a href="./shop/list.jsp">shop</a></li>
+				<li><a href="./shop/cart_list.jsp">장바구니</a></li>
 			</ul>
 		</div>
 	</div>
@@ -45,8 +45,8 @@
     <div id="nav">
 		<div id="main_lnb">
 			<ul>
-				<li><a href="#">메뉴1</a></li>
-				<li><a href="#">메뉴2</a></li>
+				<li><a href="./product/order_list.jsp">주문 정보</a></li>
+				<li><a href="./shop/buy_list.jsp">사용자 구매 정보</a></li>
 				<li><a href="#">메뉴3</a></li>
 				<li><a href="#">메뉴4</a></li>
 				<li><a href="#">메뉴5</a></li>
