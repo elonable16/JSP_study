@@ -1,23 +1,26 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+ <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+ <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
 <link rel = "stylesheet" href="./mvcboard/member.css">
+<script>
+	function openwin(num){
+		var url = "./BoardServlet?cmd=board_check_form&b_num="+ num;
+		window.open(url,"수정","width=200, height =50");
+	}
+</script>
 </head>
 <body>
 	<div id="top_nav">
-		<div id="login_info">
-			<ul>
-			</ul>
-		</div>
 		<div id="main_gnb">
 			<ul>
-				<li><a href="../main.jsp">초기화면</a></li>
-				<li><a href="../guestbook/list.jsp">방명록</a></li>
+				<li><a href="#">메뉴1</a></li>
+				<li><a href="#">메뉴2</a></li>
 				<li><a href="#">메뉴3</a></li>
 				<li><a href="#">메뉴4</a></li>
 				<li><a href="#">메뉴5</a></li>
@@ -26,7 +29,7 @@
 	</div>
 	<div id="header">
 		<img src="http://placeimg.com/960/150/nature" alt="">
-		<h1>ELON의 JSP 웹</h1>
+		<h1>JSP 웹 프로그래밍</h1>
 	</div>
 	<div id="nav">
 		<div id="main_lnb">
@@ -56,42 +59,47 @@
 		</div>
 		<div id="section">
 			<div id="article">
-				<p>게시글 쓰기</p>
-				<form method ="post" action="BoardServlet">
-					<input type = "hidden" name = "cmd" value = "board_insert">
 				<table>
 					<tr>
-						<td colspan="2" class="td_title_long">글쓰기</td>
+						<td colspan="2" class = "td_title_long">상세보기</td>
 					</tr>
 					<tr>
-						<td class="td_title_base">제목</td>
-						<td class="td_contents">
-						<input type="text"name="b_subject"></td>
-					</tr>
-					<tr>
-						<td class="td_title_base">작성자</td>
-						<td class="td_contents">
-							<input type="text" name="b_name">
+						<td class = "td_title_base">번호</td>
+						<td class = "td_contents">
+							<p>${boardone.b_num}<p>
 						</td>
 					</tr>
 					<tr>
-						<td class="td_title_base">암호</td>
-						<td class="td_contents">
-							<input type="password" name="b_passwd">
+						<td class = "td_title_base">작성자</td>
+						<td class = "td_contents">
+							<p>${boardone.b_name}<p>
 						</td>
 					</tr>
 					<tr>
-						<td class="td_title_big">내용</td>
-						<td class="td_contents_big"><textarea cols="70" rows="10"
-								name="b_contents"></textarea></td>
+						<td class = "td_title_base">작성일</td>
+						<td class = "td_contents">
+							<p>${boardone.b_date}<p>
+						</td>
 					</tr>
-
 					<tr>
-						<td colspan="2" class="td_title_long"><input type="submit"
-							value="저장하기"></td>
+						<td class = "td_title_base">내용</td>
+						<td class = "td_contents">${boardone.b_contents}</td>
 					</tr>
+					<tr>
+						<td class = "td_title_base">숫자</td>
+						<td class = "td_contents">
+							<fmt:formatNumber value="1234566" type="currency" groupingUsed="true"/>
+						</td>
+					</tr>
+					<tr>
+						<td colspan="2" class = "td_title_long">
+							<p>
+								<a href = "./BoardServlet?cmd=board_list">[리스트]</a>&nbsp;
+								<input type="button" value = "수정" onclick = "openwin(${boardone.b_num})">
+							</p>
+						</td>
+					</tr>	
 				</table>
-				</form>
 			</div>
 		</div>
 	</div>
@@ -99,5 +107,6 @@
 		<p>JSP 웹 프로그래밍</p>
 		<p>Copyright(c) 김엘론. All Right Reserved</p>
 	</div>
+
 </body>
 </html>
