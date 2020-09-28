@@ -16,7 +16,7 @@
 <%
 	String pagenum = request.getParameter("pagenum");
 	int ipagenum; // 현재 페이지
-	int pagesize = 3; // 페이징 단위
+	int pagesize = 10; // 페이징 단위
 	int startpage = 1; // 첫번째 페이지 번호
 	int endpage = 0; // 해당 그룹 마지막 페이지 번호
 	int lastpage = 0; // 전체레코드의 마지막 페이지

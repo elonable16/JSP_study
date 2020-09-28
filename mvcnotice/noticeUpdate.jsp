@@ -2,26 +2,12 @@
     pageEncoding="UTF-8"%>
  <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
  <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
- <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
 <link rel = "stylesheet" href="./mvcboard/member.css">
-<script>
-	function golist(num){
-		location.href= "./BoardServlet?cmd=board_list&pagenum="+num;
-	}
-	function openwin(num){
-		var url = "./BoardServlet?cmd=board_check_form&b_type=update&b_num="+ num;
-		window.open(url,"수정","width=200, height =50");
-	}
-	function openwindel(num){
-		var url = "./BoardServlet?cmd=board_check_form&b_type=delete&b_num="+ num;
-		window.open(url,"수정","width=200, height =50");
-	}
-</script>
 </head>
 <body>
 	<div id="top_nav">
@@ -67,48 +53,52 @@
 		</div>
 		<div id="section">
 			<div id="article">
+			<form method="post" action="BoardServlet">
+				<input type="hidden" name = "cmd" value="board_update">
 				<table>
 					<tr>
-						<td colspan="2" class = "td_title_long">상세보기</td>
+						<td colspan="2" class = "td_title_long">글 수정하기</td>
 					</tr>
 					<tr>
 						<td class = "td_title_base">번호</td>
 						<td class = "td_contents">
-							<p>${boardone.b_num}<p>
+							<p><input type="text" name="b_num" value="${notice.n_num}" readonly="readonly"><p>
+						</td>
+					</tr>
+					<tr>
+						<td class = "td_title_base">제목</td>
+						<td class = "td_contents">
+							<p><input type="text" name="b_subject" value="${notice.n_subject}"><p>
 						</td>
 					</tr>
 					<tr>
 						<td class = "td_title_base">작성자</td>
 						<td class = "td_contents">
-							<p>${boardone.b_name}<p>
+							<p><input type="text" name="b_name" value="${notice.n_name}"><p>
 						</td>
 					</tr>
 					<tr>
 						<td class = "td_title_base">작성일</td>
 						<td class = "td_contents">
-							<p>${boardone.b_date}<p>
+							<p>${notice.n_date}<p>
 						</td>
 					</tr>
 					<tr>
 						<td class = "td_title_base">내용</td>
-						<td class = "td_contents">${boardone.b_contents}</td>
+						<td class = "td_contents"><textarea cols="70" rows="10"
+								name="b_contents">${notice.n_contents}</textarea> </td>
 					</tr>
-					<tr>
-						<td class = "td_title_base">숫자</td>
-						<td class = "td_contents">
-							<fmt:formatNumber value="1234566" type="currency" groupingUsed="true"/>
-						</td>
-					</tr>
+					
 					<tr>
 						<td colspan="2" class = "td_title_long">
 							<p>
-								<input type="button" value = "리스트" onclick = "golist(${param.pagenum});">
-								<input type="button" value = "수정" onclick = "openwin(${boardone.b_num})">
-								<input type="button" value = "삭제" onclick = "openwindel(${boardone.b_num})">
+								<a href = "./NoticeServlet?cmd=notice_list">[리스트]</a>&nbsp;
+								<input type="submit" value = "수정완료">
 							</p>
 						</td>
 					</tr>	
 				</table>
+				</form>
 			</div>
 		</div>
 	</div>

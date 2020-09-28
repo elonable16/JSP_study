@@ -14,12 +14,6 @@
 	<div id="top_nav">
 		<div id="login_info">
 			<ul>
-				<li>${sessionScope.m_id}</li>
-				<li>
-			<%=
-				session.getAttribute("m_id")
-			%>
-				</li>
 			</ul>
 		</div>
 		<div id="main_gnb">
@@ -64,34 +58,21 @@
 		</div>
 		<div id="section">
 			<div id="article">
-				<p class="title">게시판 리스트</p>
+				<p class="title">공 지 사 항</p>
 				<span class="item_title1">번호</span>
 				<span class="item_title2">제목</span>
 				<span class="item_title3">작성자</span>
 				<span class="item_title4">작성일</span>
 				<span class="item_title5">기타</span>
 				<br>
-				<c:forEach var = "board" items = "${list}">
-					<span class="item_contents1">${board.b_num}</span>
-					<span class="item_contents2"><a href ="./BoardServlet?cmd=board_view&b_num=${board.b_num}&pagenum=${pagedata.pagenum}">${board.b_subject}</a></span>
-					<span class="item_contents3">${board.b_name}</span>
-					<span class="item_contents4">${fn:substring(board.b_date,0,10)}</span>
-					<span class="item_contents5">기타</span>
-					<br>
+				<c:forEach var = "list" items = "${noticelist}">
+				<span class="item_contents1">${list.n_num}</span>
+				<span class="item_contents2"><a href ="./NoticeServlet?cmd=notice_view&n_num=${list.n_num}">${list.n_subject}</a></span>
+				<span class="item_contents3">${list.n_name}</span>
+				<span class="item_contents4">${fn:substring(list.n_date,0,10)}</span>
+				<span class="item_contents5">기타</span>
+				<br>
 				</c:forEach>
-				<p>	
-					<c:if test="${pagedata.startpage>1}">
-						<a href="./BoardServlet?cmd=board_list&pagenum=${pagedata.startpage- pagedata.groupsize }">◀</a>
-					</c:if>
-					<c:forEach var="i" begin="${pagedata.startpage}" end ="${pagedata.endpage}">
-						<c:if test="${pagedata.lastpage>=i}">
-							<span><a href="./BoardServlet?cmd=board_list&pagenum=${i}">[${i}]</a></span>
-						</c:if>
-					</c:forEach>
-					<c:if test="${pagedata.endpage<pagedata.lastpage}">
-						<a href="./BoardServlet?cmd=board_list&pagenum=${pagedata.startpage+ pagedata.groupsize }">▶</a>
-					</c:if>
-				</p>
 				<p><a href = "./BoardServlet?cmd=board_insert_form">추가</a></p>
 			</div>
 		</div>

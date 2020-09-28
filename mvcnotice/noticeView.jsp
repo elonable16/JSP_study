@@ -10,16 +10,15 @@
 <title>Insert title here</title>
 <link rel = "stylesheet" href="./mvcboard/member.css">
 <script>
-	function golist(num){
-		location.href= "./BoardServlet?cmd=board_list&pagenum="+num;
+	function golist(){
+		location.href= "./NoticeServlet?cmd=notice_list";
 	}
-	function openwin(num){
-		var url = "./BoardServlet?cmd=board_check_form&b_type=update&b_num="+ num;
-		window.open(url,"수정","width=200, height =50");
+	function linkupdate(num){
+		location.href="./NoticeServlet?cmd=notice_update_form&n_num="+ num;
+		
 	}
-	function openwindel(num){
-		var url = "./BoardServlet?cmd=board_check_form&b_type=delete&b_num="+ num;
-		window.open(url,"수정","width=200, height =50");
+	function linkdel(num){
+		location.href= "./NoticeServlet?cmd=notice_delete_form&n_num="+ num;
 	}
 </script>
 </head>
@@ -74,37 +73,31 @@
 					<tr>
 						<td class = "td_title_base">번호</td>
 						<td class = "td_contents">
-							<p>${boardone.b_num}<p>
+							<p>${notice.n_num}<p>
 						</td>
 					</tr>
 					<tr>
 						<td class = "td_title_base">작성자</td>
 						<td class = "td_contents">
-							<p>${boardone.b_name}<p>
+							<p>${notice.n_name}<p>
 						</td>
 					</tr>
 					<tr>
 						<td class = "td_title_base">작성일</td>
 						<td class = "td_contents">
-							<p>${boardone.b_date}<p>
+							<p>${notice.n_date}<p>
 						</td>
 					</tr>
 					<tr>
 						<td class = "td_title_base">내용</td>
-						<td class = "td_contents">${boardone.b_contents}</td>
-					</tr>
-					<tr>
-						<td class = "td_title_base">숫자</td>
-						<td class = "td_contents">
-							<fmt:formatNumber value="1234566" type="currency" groupingUsed="true"/>
-						</td>
+						<td class = "td_contents">${notice.n_contents}</td>
 					</tr>
 					<tr>
 						<td colspan="2" class = "td_title_long">
 							<p>
-								<input type="button" value = "리스트" onclick = "golist(${param.pagenum});">
-								<input type="button" value = "수정" onclick = "openwin(${boardone.b_num})">
-								<input type="button" value = "삭제" onclick = "openwindel(${boardone.b_num})">
+								<input type="button" value = "리스트" onclick = "golist();">
+								<input type="button" value = "수정" onclick = "linkupdate(${notice.n_num})">
+								<input type="button" value = "삭제" onclick = "linkdel(${notice.n_num})">
 							</p>
 						</td>
 					</tr>	
